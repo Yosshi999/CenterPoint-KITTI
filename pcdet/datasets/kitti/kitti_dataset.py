@@ -61,22 +61,22 @@ class KittiDataset(DatasetTemplate):
 
     def get_lidar(self, idx):
         lidar_file = self.root_split_path / 'velodyne' / ('%s.bin' % idx)
-        assert lidar_file.exists()
+        assert lidar_file.exists(), "%s not found" % lidar_file
         return np.fromfile(str(lidar_file), dtype=np.float32).reshape(-1, 4)
 
     def get_image_shape(self, idx):
         img_file = self.root_split_path / 'image_2' / ('%s.png' % idx)
-        assert img_file.exists()
+        assert img_file.exists(), "%s not found" % img_file
         return np.array(io.imread(img_file).shape[:2], dtype=np.int32)
 
     def get_label(self, idx):
         label_file = self.root_split_path / 'label_2' / ('%s.txt' % idx)
-        assert label_file.exists()
+        assert label_file.exists(), "%s not found" % label_file
         return object3d_kitti.get_objects_from_label(label_file)
 
     def get_calib(self, idx):
         calib_file = self.root_split_path / 'calib' / ('%s.txt' % idx)
-        assert calib_file.exists()
+        assert calib_file.exists(), "%s not found" % calib_file
         return calibration_kitti.Calibration(calib_file)
 
     def get_road_plane(self, idx):
