@@ -75,13 +75,6 @@ ENV SPCONV_FORCE_BUILD_CUDA 1
 RUN cd ./spconv && git checkout fad3000 && git submodule update --recursive && python setup.py bdist_wheel && pip install ./dist/spconv*.whl
 
 # ==================================================================
-# other pymodule
-# ==================================================================
-# RUN PIP_INSTALL="python -m pip --no-cache-dir install --upgrade" && \
-#     $PIP_INSTALL \
-#         matplotlib
-
-# ==================================================================
 # main
 # ==================================================================
 RUN mkdir -p /app/centerpoint
@@ -93,3 +86,12 @@ RUN pip install -r requirements.txt && \
     python setup.py develop
 
 COPY tools/ /app/centerpoint/tools/
+
+# ==================================================================
+# other pymodule
+# ==================================================================
+RUN PIP_INSTALL="python -m pip --no-cache-dir install --upgrade" && \
+    $PIP_INSTALL \
+        six
+
+ENV PYTHONPATH=/app/centerpoint

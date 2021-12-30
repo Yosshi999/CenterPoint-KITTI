@@ -138,17 +138,17 @@ class CenterHead(nn.Module):
         heatmaps, anno_boxes, inds, masks = multi_apply(
             self.get_targets_single, gt_bboxes_3d, gt_labels_3d)
         # transpose heatmaps, because the dimension of tensors in each task is
-        # different, we have to use numpy instead of torch to do the transpose.
-        heatmaps = np.array(heatmaps).transpose(1, 0).tolist()
+        # different, we have to use zip trick instead of torch to do the transpose.
+        heatmaps = list(map(list, zip(*heatmaps)))
         heatmaps = [torch.stack(hms_) for hms_ in heatmaps]
         # transpose anno_boxes
-        anno_boxes = np.array(anno_boxes).transpose(1, 0).tolist()
+        anno_boxes = list(map(list, zip(*anno_boxes)))
         anno_boxes = [torch.stack(anno_boxes_) for anno_boxes_ in anno_boxes]
         # transpose inds
-        inds = np.array(inds).transpose(1, 0).tolist()
+        inds = list(map(list, zip(*inds)))
         inds = [torch.stack(inds_) for inds_ in inds]
         # transpose inds
-        masks = np.array(masks).transpose(1, 0).tolist()
+        masks = list(map(list, zip(*masks)))
         masks = [torch.stack(masks_) for masks_ in masks]
         
         all_targets_dict = {
